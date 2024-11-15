@@ -1,10 +1,11 @@
 import * as ProgressPrimitive from '@radix-ui/react-progress'
+import { twMerge } from 'tailwind-merge'
 
 export function Progress(props: ProgressPrimitive.ProgressProps) {
   return (
     <ProgressPrimitive.Progress
       {...props}
-      className="h-2 rounded-full bg-zinc-900"
+      className={twMerge('h-2 rounded-full bg-zinc-900', props.className)}
     />
   )
 }

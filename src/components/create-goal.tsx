@@ -4,7 +4,12 @@ import { X } from 'lucide-react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { createGoal } from '@/http/create-goal'
+import {
+  getGetPendingGoalsQueryKey,
+  getGetUserLevelAndExperienceQueryKey,
+  getGetWeekSummaryQueryKey,
+  useCreateGoal,
+} from '@/http/generated/api'
 
 import { Button } from './ui/button'
 import {
@@ -36,17 +41,24 @@ export function CreateGoal() {
       resolver: zodResolver(createGoalForm),
     })
 
+  const { mutateAsync: createGoal } = useCreateGoal()
+
   async function handleCreateGoal(data: CreateGoalForm) {
     await createGoal({
-      title: data.title,
-      desiredWeeklyFrequency: data.desiredWeeklyFrequency,
+      data: {
+        title: data.title,
+        desiredWeeklyFrequency: data.desiredWeeklyFrequency,
+      },
     })
 
     queryClient.invalidateQueries({
-      queryKey: ['summary'],
+      queryKey: getGetWeekSummaryQueryKey(),
     })
     queryClient.invalidateQueries({
-      queryKey: ['pending-goals'],
+      queryKey: getGetPendingGoalsQueryKey(),
+    })
+    queryClient.invalidateQueries({
+      queryKey: getGetUserLevelAndExperienceQueryKey(),
     })
 
     reset()

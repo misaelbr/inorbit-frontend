@@ -1,33 +1,40 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 
-import { createGoalCompletion } from '@/http/create-goal-completion'
-import { getPendingGoals } from '@/http/get-pending-goals'
+import {
+  getGetPendingGoalsQueryKey,
+  getGetUserLevelAndExperienceQueryKey,
+  getGetWeekSummaryQueryKey,
+  useCreateCompletion,
+  useGetPendingGoals,
+} from '@/http/generated/api'
 
 import { OutlineButton } from './ui/outline-button'
 
 export function PendingGoals() {
   const queryClient = useQueryClient()
 
-  const { data } = useQuery({
-    queryFn: getPendingGoals,
-    queryKey: ['pending-goals'],
-  })
+  const { data, isLoading } = useGetPendingGoals()
 
-  if (!data) {
+  const { mutateAsync: createGoalCompletion } = useCreateCompletion()
+
+  if (isLoading || !data) {
     return null
   }
 
   async function handleCompleteGoal(goalId: string) {
-    await createGoalCompletion(goalId)
+    await createGoalCompletion({ data: { goalId } })
 
-    queryClient.invalidateQueries({ queryKey: ['summary'] })
-    queryClient.invalidateQueries({ queryKey: ['pending-goals'] })
+    queryClient.invalidateQueries({ queryKey: getGetWeekSummaryQueryKey() })
+    queryClient.invalidateQueries({ queryKey: getGetPendingGoalsQueryKey() })
+    queryClient.invalidateQueries({
+      queryKey: getGetUserLevelAndExperienceQueryKey(),
+    })
   }
 
   return (
     <div className="flex flex-wrap gap-3">
-      {data.map((goal) => {
+      {data.pendingGoals.map((goal) => {
         return (
           <OutlineButton
             key={goal.id}
