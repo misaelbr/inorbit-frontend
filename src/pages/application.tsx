@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { Loader2 } from 'lucide-react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
 import { useGetWeekSummary } from '@/http/generated/api'
 
@@ -10,8 +10,6 @@ import { WeeklySummary } from '../components/weekly-summary'
 
 export function Application() {
   const [searchParams] = useSearchParams()
-  const navigate = useNavigate()
-
   const weekStartsAtParam = searchParams.get('week_starts_at')
 
   const weekStartsAt = weekStartsAtParam
@@ -21,10 +19,6 @@ export function Application() {
   const { data, isLoading } = useGetWeekSummary({
     weekStartsAt: dayjs(weekStartsAt).startOf('week').toISOString(),
   })
-
-  if (!data) {
-    navigate('/')
-  }
 
   if (isLoading || !data) {
     return (
@@ -37,7 +31,6 @@ export function Application() {
   return (
     <Dialog>
       <WeeklySummary summary={data.summary} />
-
       <CreateGoal />
     </Dialog>
   )

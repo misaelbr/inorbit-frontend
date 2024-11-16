@@ -1,3 +1,6 @@
+import { Navigate } from 'react-router-dom'
+import Cookies from 'universal-cookie'
+
 import github from '@/assets/github.svg'
 import logo from '@/assets/logo-in-orbit.svg'
 import { Button } from '@/components/ui/button'
@@ -5,6 +8,13 @@ import { Button } from '@/components/ui/button'
 export function SignInWithGithub() {
   const githubUrl = new URL('login/oauth/authorize', 'https://github.com/')
   githubUrl.searchParams.set('client_id', 'Ov23li45PAZRmAvP7xIb')
+
+  const cookies = new Cookies()
+  const token = cookies.get('in-orbit.token')
+
+  if (token) {
+    return <Navigate to="/app" />
+  }
 
   return (
     <main className="flex h-screen flex-col items-center justify-center gap-8">
