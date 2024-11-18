@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 
 export function SignInWithGithub() {
   const githubUrl = new URL('login/oauth/authorize', 'https://github.com/')
-  githubUrl.searchParams.set('client_id', 'Ov23li45PAZRmAvP7xIb')
+  githubUrl.searchParams.set('client_id', import.meta.env.VITE_GITHUB_CLIENT_ID)
 
   const cookies = new Cookies()
   const token = cookies.get('in-orbit.token')
