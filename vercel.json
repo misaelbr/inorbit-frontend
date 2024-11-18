@@ -1,7 +1,5 @@
 {
-  "routes": [
-    { "src": "/app", "dest": "/" },
-    { "src": "/auth/github/callback", "dest": "/" },
-    { "src": "/", "dest": "/" }
+  "rewrites":  [
+    {"source": "/(.*)", "destination": "/"}
   ]
 }
