@@ -18,7 +18,11 @@ export function SignInWithGoogleCallback() {
       return
     }
 
-    authenticateFromGoogle({ data: { code } }).then((response) => {
+    authenticateFromGoogle({
+      params: {
+        code,
+      },
+    }).then((response) => {
       const token = response.token
       const cookies = new Cookies()
 
