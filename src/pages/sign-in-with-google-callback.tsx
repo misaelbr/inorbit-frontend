@@ -5,7 +5,7 @@ import Cookies from 'universal-cookie'
 
 import { useAuthenticateFromGoogle } from '@/http/generated/api'
 
-export function SignInWithGoogleCallback() {
+export async function SignInWithGoogleCallback() {
   const navigate = useNavigate()
   const { mutateAsync: authenticateFromGoogle } = useAuthenticateFromGoogle()
 
