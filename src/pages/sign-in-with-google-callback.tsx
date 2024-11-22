@@ -22,6 +22,8 @@ export function SignInWithGoogleCallback() {
       const token = response.token
       const cookies = new Cookies()
 
+      console.log(response)
+
       cookies.set('in-orbit.token', token, {
         path: '/',
         maxAge: 60 * 60 * 24, // 1 day
