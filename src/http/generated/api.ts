@@ -40,6 +40,10 @@ export type GetProfile200 = {
   profile: GetProfile200Profile;
 };
 
+export type AuthenticateFromGoogle401 = {
+  message: string;
+};
+
 export type AuthenticateFromGoogle201 = {
   token: string;
 };
@@ -608,7 +612,7 @@ export const authenticateFromGoogle = async (params: AuthenticateFromGoogleParam
 
 
 
-export const getAuthenticateFromGoogleMutationOptions = <TError = unknown,
+export const getAuthenticateFromGoogleMutationOptions = <TError = AuthenticateFromGoogle401,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{params: AuthenticateFromGoogleParams}, TContext>, request?: SecondParameter<typeof http>}
 ): UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{params: AuthenticateFromGoogleParams}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
@@ -629,9 +633,9 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
     export type AuthenticateFromGoogleMutationResult = NonNullable<Awaited<ReturnType<typeof authenticateFromGoogle>>>
     
-    export type AuthenticateFromGoogleMutationError = unknown
+    export type AuthenticateFromGoogleMutationError = AuthenticateFromGoogle401
 
-    export const useAuthenticateFromGoogle = <TError = unknown,
+    export const useAuthenticateFromGoogle = <TError = AuthenticateFromGoogle401,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{params: AuthenticateFromGoogleParams}, TContext>, request?: SecondParameter<typeof http>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof authenticateFromGoogle>>,
