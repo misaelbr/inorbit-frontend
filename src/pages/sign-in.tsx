@@ -15,7 +15,7 @@ export function SignIn() {
   googleUrl.searchParams.set('access_type', 'offline')
   googleUrl.searchParams.set('prompt', 'consent')
   googleUrl.searchParams.set('response_type', 'code')
-  googleUrl.searchParams.set('scope', 'email profile openid')
+  googleUrl.searchParams.set('scope', 'email profile')
   googleUrl.searchParams.set(
     'redirect_uri',
     `${import.meta.env.VITE_FRONTEND_URL}/auth/google/callback`,
