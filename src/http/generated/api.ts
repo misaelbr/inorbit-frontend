@@ -40,16 +40,12 @@ export type GetProfile200 = {
   profile: GetProfile200Profile;
 };
 
-export type AuthenticateFromGoogle401 = {
-  message: string;
-};
-
 export type AuthenticateFromGoogle201 = {
   token: string;
 };
 
-export type AuthenticateFromGoogleParams = {
-auth?: string;
+export type AuthenticateFromGoogleBody = {
+  code: string;
 };
 
 export type AuthenticateFromGithub201 = {
@@ -585,45 +581,39 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 /**
  * Authenticate user from Google
  */
-export const getAuthenticateFromGoogleUrl = (params?: AuthenticateFromGoogleParams,) => {
-  const normalizedParams = new URLSearchParams();
+export const getAuthenticateFromGoogleUrl = () => {
 
-  Object.entries(params || {}).forEach(([key, value]) => {
-    
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
-    }
-  });
 
-  return normalizedParams.size ? `/auth/google?${normalizedParams.toString()}` : `/auth/google`
+  return `/auth/google`
 }
 
-export const authenticateFromGoogle = async (params?: AuthenticateFromGoogleParams, options?: RequestInit): Promise<AuthenticateFromGoogle201> => {
+export const authenticateFromGoogle = async (authenticateFromGoogleBody: AuthenticateFromGoogleBody, options?: RequestInit): Promise<AuthenticateFromGoogle201> => {
   
-  return http<Promise<AuthenticateFromGoogle201>>(getAuthenticateFromGoogleUrl(params),
+  return http<Promise<AuthenticateFromGoogle201>>(getAuthenticateFromGoogleUrl(),
   {      
     ...options,
-    method: 'POST'
-    
-    
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      authenticateFromGoogleBody,)
   }
 );}
 
 
 
 
-export const getAuthenticateFromGoogleMutationOptions = <TError = AuthenticateFromGoogle401,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{params?: AuthenticateFromGoogleParams}, TContext>, request?: SecondParameter<typeof http>}
-): UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{params?: AuthenticateFromGoogleParams}, TContext> => {
+export const getAuthenticateFromGoogleMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{data: AuthenticateFromGoogleBody}, TContext>, request?: SecondParameter<typeof http>}
+): UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{data: AuthenticateFromGoogleBody}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authenticateFromGoogle>>, {params?: AuthenticateFromGoogleParams}> = (props) => {
-          const {params} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authenticateFromGoogle>>, {data: AuthenticateFromGoogleBody}> = (props) => {
+          const {data} = props ?? {};
 
-          return  authenticateFromGoogle(params,requestOptions)
+          return  authenticateFromGoogle(data,requestOptions)
         }
 
         
@@ -632,15 +622,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
   return  { mutationFn, ...mutationOptions }}
 
     export type AuthenticateFromGoogleMutationResult = NonNullable<Awaited<ReturnType<typeof authenticateFromGoogle>>>
-    
-    export type AuthenticateFromGoogleMutationError = AuthenticateFromGoogle401
+    export type AuthenticateFromGoogleMutationBody = AuthenticateFromGoogleBody
+    export type AuthenticateFromGoogleMutationError = unknown
 
-    export const useAuthenticateFromGoogle = <TError = AuthenticateFromGoogle401,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{params?: AuthenticateFromGoogleParams}, TContext>, request?: SecondParameter<typeof http>}
+    export const useAuthenticateFromGoogle = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{data: AuthenticateFromGoogleBody}, TContext>, request?: SecondParameter<typeof http>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof authenticateFromGoogle>>,
         TError,
-        {params?: AuthenticateFromGoogleParams},
+        {data: AuthenticateFromGoogleBody},
         TContext
       > => {
 
