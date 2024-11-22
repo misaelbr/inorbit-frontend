@@ -49,7 +49,7 @@ export type AuthenticateFromGoogle201 = {
 };
 
 export type AuthenticateFromGoogleParams = {
-code: string;
+auth?: string;
 };
 
 export type AuthenticateFromGithub201 = {
@@ -585,7 +585,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 /**
  * Authenticate user from Google
  */
-export const getAuthenticateFromGoogleUrl = (params: AuthenticateFromGoogleParams,) => {
+export const getAuthenticateFromGoogleUrl = (params?: AuthenticateFromGoogleParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -598,7 +598,7 @@ export const getAuthenticateFromGoogleUrl = (params: AuthenticateFromGoogleParam
   return normalizedParams.size ? `/auth/google?${normalizedParams.toString()}` : `/auth/google`
 }
 
-export const authenticateFromGoogle = async (params: AuthenticateFromGoogleParams, options?: RequestInit): Promise<AuthenticateFromGoogle201> => {
+export const authenticateFromGoogle = async (params?: AuthenticateFromGoogleParams, options?: RequestInit): Promise<AuthenticateFromGoogle201> => {
   
   return http<Promise<AuthenticateFromGoogle201>>(getAuthenticateFromGoogleUrl(params),
   {      
@@ -613,14 +613,14 @@ export const authenticateFromGoogle = async (params: AuthenticateFromGoogleParam
 
 
 export const getAuthenticateFromGoogleMutationOptions = <TError = AuthenticateFromGoogle401,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{params: AuthenticateFromGoogleParams}, TContext>, request?: SecondParameter<typeof http>}
-): UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{params: AuthenticateFromGoogleParams}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{params?: AuthenticateFromGoogleParams}, TContext>, request?: SecondParameter<typeof http>}
+): UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{params?: AuthenticateFromGoogleParams}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authenticateFromGoogle>>, {params: AuthenticateFromGoogleParams}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authenticateFromGoogle>>, {params?: AuthenticateFromGoogleParams}> = (props) => {
           const {params} = props ?? {};
 
           return  authenticateFromGoogle(params,requestOptions)
@@ -636,11 +636,11 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
     export type AuthenticateFromGoogleMutationError = AuthenticateFromGoogle401
 
     export const useAuthenticateFromGoogle = <TError = AuthenticateFromGoogle401,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{params: AuthenticateFromGoogleParams}, TContext>, request?: SecondParameter<typeof http>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authenticateFromGoogle>>, TError,{params?: AuthenticateFromGoogleParams}, TContext>, request?: SecondParameter<typeof http>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof authenticateFromGoogle>>,
         TError,
-        {params: AuthenticateFromGoogleParams},
+        {params?: AuthenticateFromGoogleParams},
         TContext
       > => {
 
