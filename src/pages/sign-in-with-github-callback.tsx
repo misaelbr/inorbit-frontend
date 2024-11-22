@@ -11,16 +11,17 @@ export function SignInWithGithubCallback() {
 
   const [searchParams] = useSearchParams()
   const code = searchParams.get('code')
-  if (!code) {
-    navigate('/')
-    return
-  }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
+    if (!code) {
+      navigate('/')
+      return
+    }
+
     authenticateFromGithub({ data: { code } }).then((response) => {
       const token = response.token
       const cookies = new Cookies()
+      console.log(response)
 
       cookies.set('in-orbit.token', token, {
         path: '/',
@@ -29,8 +30,7 @@ export function SignInWithGithubCallback() {
 
       navigate('/app')
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [code, navigate, authenticateFromGithub])
 
   return (
     <div className="center flex h-screen items-center justify-center">

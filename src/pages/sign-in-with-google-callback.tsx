@@ -11,13 +11,13 @@ export function SignInWithGoogleCallback() {
 
   const [searchParams] = useSearchParams()
   const code = searchParams.get('code')
-  if (!code) {
-    navigate('/')
-    return
-  }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
+    if (!code) {
+      navigate('/')
+      return
+    }
+
     authenticateFromGoogle({ data: { code } }).then((response) => {
       const token = response.token
       const cookies = new Cookies()
@@ -31,8 +31,7 @@ export function SignInWithGoogleCallback() {
 
       navigate('/app')
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [authenticateFromGoogle, code, navigate])
 
   return (
     <div className="center flex h-screen items-center justify-center">
