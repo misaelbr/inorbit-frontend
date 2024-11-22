@@ -12,7 +12,7 @@ export function SignIn() {
 
   const googleUrl = new URL('o/oauth2/v2/auth', 'https://accounts.google.com/')
   googleUrl.searchParams.set('client_id', import.meta.env.VITE_GOOGLE_CLIENT_ID)
-  googleUrl.searchParams.set('access_type', 'offline')
+  googleUrl.searchParams.set('access_type', 'online')
   googleUrl.searchParams.set('prompt', 'consent')
   googleUrl.searchParams.set('response_type', 'code')
   googleUrl.searchParams.set(
