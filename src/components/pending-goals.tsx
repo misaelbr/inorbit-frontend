@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
+import ReactGA from 'react-ga4'
 
 import {
   getGetPendingGoalsQueryKey,
@@ -24,6 +25,12 @@ export function PendingGoals() {
 
   async function handleCompleteGoal(goalId: string) {
     await createGoalCompletion({ data: { goalId } })
+
+    ReactGA.event({
+      category: 'Goal',
+      action: 'Click button',
+      label: 'Complete Goal',
+    })
 
     queryClient.invalidateQueries({ queryKey: getGetWeekSummaryQueryKey() })
     queryClient.invalidateQueries({ queryKey: getGetPendingGoalsQueryKey() })

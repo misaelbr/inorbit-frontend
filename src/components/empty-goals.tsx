@@ -1,4 +1,5 @@
 import { Plus } from 'lucide-react'
+import ReactGA from 'react-ga4'
 
 import letsStart from '@/assets/lets-start-ilustration.svg'
 import logo from '@/assets/logo-in-orbit.svg'
@@ -7,6 +8,14 @@ import { Button } from './ui/button'
 import { DialogTrigger } from './ui/dialog'
 
 export function EmptyGoals() {
+  function handleClick() {
+    ReactGA.event({
+      category: 'Goal',
+      action: 'Click button',
+      label: 'Create Goal',
+    })
+  }
+
   return (
     <main className="flex h-screen flex-col items-center justify-center gap-8">
       <img src={logo} alt="logo" />
@@ -17,7 +26,7 @@ export function EmptyGoals() {
       </p>
 
       <DialogTrigger asChild>
-        <Button>
+        <Button onClick={() => handleClick()}>
           <Plus className="size-4" />
           Cadastrar meta
         </Button>
