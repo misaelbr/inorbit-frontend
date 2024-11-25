@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
 import { X } from 'lucide-react'
+import ReactGA from 'react-ga4'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -62,6 +63,14 @@ export function CreateGoal() {
     })
 
     reset()
+  }
+
+  function handleClick(origin: 'close' | 'save') {
+    ReactGA.event({
+      category: 'Navigation',
+      label: origin,
+      action: 'Click button',
+    })
   }
 
   return (
@@ -166,11 +175,18 @@ export function CreateGoal() {
           </div>
           <div className="flex items-center gap-3">
             <DialogClose asChild>
-              <Button type="button" className="flex-1" variant="secondary">
+              <Button
+                onClick={() => handleClick('close')}
+                type="button"
+                className="flex-1"
+                variant="secondary"
+              >
                 Fechar
               </Button>
             </DialogClose>
-            <Button className="flex-1">Salvar</Button>
+            <Button onClick={() => handleClick('save')} className="flex-1">
+              Salvar
+            </Button>
           </div>
         </form>
       </div>
