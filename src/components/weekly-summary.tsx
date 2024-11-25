@@ -8,6 +8,7 @@ import {
   Plus,
   RotateCcw,
 } from 'lucide-react'
+import ReactGA from 'react-ga4'
 import { useSearchParams } from 'react-router-dom'
 
 import {
@@ -49,6 +50,12 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
   async function handleUndoGoalCompletion(goalCompletionId: string) {
     await undoGoalCompletion({ goalCompletionId })
 
+    ReactGA.event({
+      category: 'Navigation',
+      label: 'Undo Goal Completion',
+      action: 'Click button',
+    })
+
     queryClient.invalidateQueries({
       queryKey: getGetWeekSummaryQueryKey(),
     })
@@ -67,7 +74,16 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
     ? Math.round((summary.completed / summary.total) * 100)
     : 0
 
+  function handleButtonClick(origin: string) {
+    ReactGA.event({
+      category: 'Navigation',
+      label: origin,
+      action: 'Click button',
+    })
+  }
+
   function handlePreviusWeek() {
+    handleButtonClick('Previous Week')
     const params = new URLSearchParams(searchParams)
 
     params.set(
@@ -80,6 +96,8 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
 
   function handleNextWeeek() {
     const params = new URLSearchParams(searchParams)
+
+    handleButtonClick('Next Week')
 
     params.set(
       'week_starts_at',
@@ -125,7 +143,11 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
             </div>
           </div>
           <DialogTrigger asChild>
-            <Button size="sm" disabled={!isCurrentWeek}>
+            <Button
+              size="sm"
+              disabled={!isCurrentWeek}
+              onClick={() => handleButtonClick('Cadastrar Meta')}
+            >
               <Plus className="size-4" />
               Cadastrar meta
             </Button>
@@ -135,7 +157,7 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
           <Progress
             className="bg-zinc-800"
             value={summary.completed}
-            max={summary.total ?? 1}
+            max={summary.total ? summary.total : 1}
           >
             <ProgressIndicator style={{ width: `${completedPercentage}%` }} />
           </Progress>

@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga4'
 import { Navigate } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 
@@ -7,6 +8,14 @@ import logo from '@/assets/logo-in-orbit.svg'
 import { Button } from '@/components/ui/button'
 
 export function SignIn() {
+  function handleButtonClick(oauthProvider: string) {
+    ReactGA.event({
+      category: 'Navigation',
+      label: `Login with ${oauthProvider}`,
+      action: 'Click button',
+    })
+  }
+
   const githubUrl = new URL('login/oauth/authorize', 'https://github.com/')
   githubUrl.searchParams.set('client_id', import.meta.env.VITE_GITHUB_CLIENT_ID)
 
@@ -40,6 +49,7 @@ export function SignIn() {
 
       <Button
         className="bg-white text-black hover:bg-white hover:opacity-60"
+        onClick={() => handleButtonClick('Github')}
         asChild
       >
         <a href={githubUrl.toString()}>
@@ -48,6 +58,7 @@ export function SignIn() {
       </Button>
       <Button
         className="bg-white text-black hover:bg-white hover:opacity-60"
+        onClick={() => handleButtonClick('Google')}
         asChild
       >
         <a href={googleUrl.toString()}>
