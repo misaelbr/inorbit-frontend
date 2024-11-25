@@ -1,6 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import ptBR from 'dayjs/locale/pt-br'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
 import {
   ArrowLeft,
   ArrowRight,
@@ -28,6 +30,8 @@ import { UserLevel } from './user-level'
 import { UserProfile } from './user-profile'
 
 dayjs.locale(ptBR)
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 interface WeeklySummaryProps {
   summary: GetWeekSummary200Summary
@@ -145,8 +149,8 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
             <span>
               Você completou{' '}
               <span className="text-zinc-100">{summary.completed}</span> de{' '}
-              <span className="text-zinc-100">{summary.total}</span> metas
-              nessta semana.
+              <span className="text-zinc-100">{summary.total}</span> metas nesta
+              semana.
             </span>
             <span>{completedPercentage}%</span>
           </div>
@@ -162,8 +166,10 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
           ) : (
             summary.goalsPerDay &&
             Object.entries(summary.goalsPerDay).map(([date, goals]) => {
-              const weekDay = dayjs(date).format('dddd')
-              const formattedDate = dayjs(date).format('DD/MM')
+              const weekDay = dayjs(date).tz('America/Sao_Paulo').format('dddd')
+              const formattedDate = dayjs(date)
+                .tz('America/Sao_Paulo')
+                .format('DD/MM')
 
               return (
                 <div key={date} className="flex flex-col gap-4">
