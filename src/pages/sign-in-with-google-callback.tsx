@@ -21,7 +21,6 @@ export function SignInWithGoogleCallback() {
     authenticateFromGoogle({ data: { code } }).then((response) => {
       const token = response.token
       const cookies = new Cookies()
-      console.log(response)
 
       cookies.set('in-orbit.token', token, {
         path: '/',

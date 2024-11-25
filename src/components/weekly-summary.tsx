@@ -1,8 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import ptBR from 'dayjs/locale/pt-br'
-import timezone from 'dayjs/plugin/timezone'
-import utc from 'dayjs/plugin/utc'
 import {
   ArrowLeft,
   ArrowRight,
@@ -30,8 +28,6 @@ import { UserLevel } from './user-level'
 import { UserProfile } from './user-profile'
 
 dayjs.locale(ptBR)
-dayjs.extend(utc)
-dayjs.extend(timezone)
 
 interface WeeklySummaryProps {
   summary: GetWeekSummary200Summary
@@ -92,8 +88,6 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
 
     setSearchParams(params)
   }
-
-  // const isCurrentWeek = dayjs(weekStartsAt).startOf('week').isBefore(new Date())
 
   const isCurrentWeek = dayjs(dayjs(weekStartsAt).endOf('week')).isAfter(
     new Date(),
@@ -166,10 +160,10 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
           ) : (
             summary.goalsPerDay &&
             Object.entries(summary.goalsPerDay).map(([date, goals]) => {
-              const weekDay = dayjs(date).tz('America/Sao_Paulo').format('dddd')
-              const formattedDate = dayjs(date)
-                .tz('America/Sao_Paulo')
-                .format('DD/MM')
+              // const dateInTz = dayjs(date).tz('America/Sao_Paulo')
+
+              const weekDay = dayjs(date).format('dddd')
+              const formattedDate = dayjs(date).format('DD/MM')
 
               return (
                 <div key={date} className="flex flex-col gap-4">
