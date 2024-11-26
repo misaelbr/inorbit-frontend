@@ -182,8 +182,6 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
           ) : (
             summary.goalsPerDay &&
             Object.entries(summary.goalsPerDay).map(([date, goals]) => {
-              // const dateInTz = dayjs(date).tz('America/Sao_Paulo')
-
               const weekDay = dayjs(date).format('dddd')
               const formattedDate = dayjs(date).format('DD/MM')
 
@@ -204,9 +202,9 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
                         <li key={goal.id} className="flex items-center gap-2">
                           <CheckCircle2 className="size-4 text-pink-500" />
                           <span className="text-sm text-zinc-400">
-                            Você completou{'"'}
+                            Você completou{' "'}
                             <span className="text-zinc-100">{goal.title}</span>
-                            {'"'}
+                            {'" '}
                             às{' '}
                             <span className="text-zinc-100">
                               {formattedHour}

@@ -21,7 +21,11 @@ export function UserLevel() {
         </span>
         <span>{percentage}%</span>
       </div>
-      <Progress value={data.experience} max={data.experienceToNextLevel}>
+      <Progress
+        className="py-1"
+        value={data.experience}
+        max={data.experienceToNextLevel}
+      >
         <ProgressIndicator style={{ width: `${percentage}%` }} />
       </Progress>
     </div>
